@@ -1,7 +1,7 @@
 ## Downloads neccesary data if not present.
 if (!file.exists("data.zip")) {
     short_url <- paste("https://d396qusza40orc.cloudfront.net/",
-                  "exdata%2Fdata%2Fhousehold_power_consumption.zip", sep = "")
+                       "exdata%2Fdata%2Fhousehold_power_consumption.zip", sep = "")
     download.file(url=short_url, destfile="data.zip")
     unzip("data.zip")  
 }
@@ -17,9 +17,13 @@ power_data <- transform(power_data, Date = as.Date(Date, format="%d/%m/%Y"))
 power_data <- transform(power_data, strptime(Time, format="%H:%M:%S"))
 
 ##Plots the data.
-png(filename="plot1.png", width=480, height=480)
-hist(power_data$Global_active_power, 
-     col="red", 
-     xlab="Global Active Power (kilowatts)", 
-     main="Global Active Power")
+png(filename = "plot3.png", width = 480, height = 480)
+with(power_data, plot(date_time, Sub_metering_1, type = "l",
+                      ylab = "Energy sub metering", 
+                      xlab = ""))
+with(power_data, lines(date_time, Sub_metering_2, col = "red"))
+with(power_data, lines(date_time, Sub_metering_3, col = "blue"))
+legend("topright", lty = 1, col = c("black", "red", "blue"), 
+       legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
+
 dev.off()
